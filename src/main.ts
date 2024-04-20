@@ -1,24 +1,38 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import * as PIXI from 'pixi.js';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const Application = PIXI.Application;
+const Graphics = PIXI.Graphics;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+(async () => {
+    const app = new Application();
+    await app.init({
+        width: 640,
+        height: 360
+    });
+
+    document.body.appendChild(app.canvas);
+
+    const rectangle = new Graphics();
+    rectangle
+        .roundRect(0, 0, 64, 64, 15)
+        .fill(0x66CCFF);
+
+    rectangle.x = 100;
+    rectangle.y = 100;
+
+    app.stage.addChild(rectangle);
+
+    let rectangleSpeed: number = 500;
+    app.ticker.add((ticker) => {
+        const delta = ticker.deltaTime / 100;
+        rectangle.x += rectangleSpeed * delta;
+
+        if(rectangle.x > app.screen.width - rectangle.width) {
+            rectangle.x = app.screen.width - rectangle.width;
+            rectangleSpeed = -rectangleSpeed;
+        } else if(rectangle.x < 0) {
+            rectangle.x = 0;
+            rectangleSpeed = -rectangleSpeed;
+        }
+    });
+})();
