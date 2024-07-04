@@ -31,13 +31,13 @@ const Graphics = PIXI.Graphics;
         rectangle.x += rectangleSpeed * delta;
 
         if(rectangle.x > app.screen.width - rectangle.width) {
+            bounceSound.play();
             rectangle.x = app.screen.width - rectangle.width;
             rectangleSpeed = -rectangleSpeed;
-            bounceSound.play();
         } else if(rectangle.x < 0) {
+            bounceSound.play();
             rectangle.x = 0;
             rectangleSpeed = -rectangleSpeed;
-            bounceSound.play();
         }
     });
 })();
