@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import sound from 'pixi-sound';
 
 const Application = PIXI.Application;
 const Graphics = PIXI.Graphics;
@@ -7,7 +8,8 @@ const Graphics = PIXI.Graphics;
     const app = new Application();
     await app.init({
         width: 640,
-        height: 360
+        height: 360,
+        backgroundColor: 0x1099bb
     });
 
     document.body.appendChild(app.canvas);
@@ -15,14 +17,14 @@ const Graphics = PIXI.Graphics;
     const rectangle = new Graphics();
     rectangle
         .roundRect(0, 0, 64, 64, 15)
-        .fill(0x66CCFF);
+        .fill(0xFFFFFF);
 
     rectangle.x = 100;
     rectangle.y = 100;
 
     app.stage.addChild(rectangle);
 
-    let rectangleSpeed: number = 500;
+    let rectangleSpeed: number = 200;
     app.ticker.add((ticker) => {
         const delta = ticker.deltaTime / 100;
         rectangle.x += rectangleSpeed * delta;
