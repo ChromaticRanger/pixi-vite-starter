@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
-import sound from 'pixi-sound';
+import { Sound } from '@pixi/sound';
+import {Text} from 'pixi.js';
 
 const Application = PIXI.Application;
 const Graphics = PIXI.Graphics;
@@ -25,19 +26,39 @@ const Graphics = PIXI.Graphics;
     app.stage.addChild(rectangle);
 
     let rectangleSpeed: number = 200;
-    const bounceSound = sound.Sound.from('sounds/boing.mp3');
+    const bounceSound = await Sound.from('sounds/boing.mp3');
+
+    let bounceCount = 0;
+
+    const bounceCountText = new Text({
+        text: `${ bounceCount }`, 
+        style: {
+            fontFamily: 'Arial',
+            fontSize: 24,
+            fill: 0xff1010,
+            align: 'left',
+        }
+    });
+    bounceCountText.x = 10;
+    bounceCountText.y = 10;
+    app.stage.addChild( bounceCountText );
+
     app.ticker.add((ticker) => {
         const delta = ticker.deltaTime / 100;
         rectangle.x += rectangleSpeed * delta;
 
-        if(rectangle.x > app.screen.width - rectangle.width) {
-            bounceSound.play();
+        if( rectangle.x > app.screen.width - rectangle.width ) {
             rectangle.x = app.screen.width - rectangle.width;
             rectangleSpeed = -rectangleSpeed;
-        } else if(rectangle.x < 0) {
             bounceSound.play();
+            bounceCount++;
+            bounceCountText.text = `${ bounceCount }`;
+        } else if( rectangle.x < 0 ) {
             rectangle.x = 0;
             rectangleSpeed = -rectangleSpeed;
+            bounceSound.play();
+            bounceCount++;
+            bounceCountText.text = `${ bounceCount }`;
         }
     });
 })();
