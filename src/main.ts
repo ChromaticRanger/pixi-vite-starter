@@ -25,6 +25,7 @@ const Graphics = PIXI.Graphics;
     app.stage.addChild(rectangle);
 
     let rectangleSpeed: number = 200;
+    const bounceSound = sound.Sound.from('sounds/boing.mp3');
     app.ticker.add((ticker) => {
         const delta = ticker.deltaTime / 100;
         rectangle.x += rectangleSpeed * delta;
@@ -32,9 +33,11 @@ const Graphics = PIXI.Graphics;
         if(rectangle.x > app.screen.width - rectangle.width) {
             rectangle.x = app.screen.width - rectangle.width;
             rectangleSpeed = -rectangleSpeed;
+            bounceSound.play();
         } else if(rectangle.x < 0) {
             rectangle.x = 0;
             rectangleSpeed = -rectangleSpeed;
+            bounceSound.play();
         }
     });
 })();
